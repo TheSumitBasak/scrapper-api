@@ -4,14 +4,15 @@ dotenv.config();
 
 import express from "express";
 import cors from "cors";
-import { errorHandler } from "@/middlewares/errorHandler";
+import scrapperRouter from "@/routes/scrapperRoutes";
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(errorHandler);
+// Import routes
+app.use("/api/scrapper", scrapperRouter);
 
 app.use(
   cors({

@@ -21,7 +21,6 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "node-cache": "^5.1.2",
-    "playwright": "^1.52.0",
     "puppeteer": "^24.8.0",
     "tsconfig-paths": "^4.2.0",
     "uuid": "^11.1.0",
