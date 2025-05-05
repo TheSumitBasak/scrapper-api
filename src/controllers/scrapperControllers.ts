@@ -63,7 +63,15 @@ export async function getUrls(req: Request, res: Response) {
   }
 
   try {
-    const result = await crawlWebsite(session, url || session.queue[0]);
+    const result: {
+      token: string;
+      totalLinks: number;
+      links: string[];
+      remainingQueue: number;
+      session?: CrawlerSessionState;
+    } = await crawlWebsite(session, url || session.queue[0]);
+    sessionCache.set(session.token, session); // Update the session in cache
+      delete result.session; // Remove session data from the result
     res.json(result);
   } catch (err) {
     const error = err as Error;

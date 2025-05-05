@@ -146,6 +146,7 @@ export async function crawlWebsite(
     totalLinks: session.allLinks.size,
     links: [...session.allLinks],
     remainingQueue: session.queue.length,
+    session: session,
   };
 }
 
@@ -190,7 +191,10 @@ async function getSPAData(
     }
 
     const data = await page.evaluate(() => {
-      return document.documentElement.textContent;
+      Array.from(document.querySelectorAll("link[rel='stylesheet']")).forEach(
+        (el) => el.remove()
+      );
+      return document.body.textContent;
     });
 
     if (isCanceled()) {
