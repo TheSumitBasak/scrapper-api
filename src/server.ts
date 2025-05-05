@@ -8,8 +8,8 @@ import scrapperRouter from "@/routes/scrapperRoutes";
 
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "10mb" })); // or bigger if needed
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 // Import routes
 app.use("/api/scrapper", scrapperRouter);

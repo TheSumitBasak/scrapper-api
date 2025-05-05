@@ -2,7 +2,7 @@ import xml2js from "xml2js";
 import axios from "axios";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { crawlWebsite } from "@/utils/crawler";
+import { crawlWebsite, getUrlsData } from "@/utils/crawler";
 import NodeCache from "node-cache";
 import { CrawlerSessionState } from "@/types/crawlerSession";
 
@@ -63,13 +63,26 @@ export async function getUrls(req: Request, res: Response) {
   }
 
   try {
-    const result = await crawlWebsite(
-      session,
-      url || session.queue[0],
-    );
+    const result = await crawlWebsite(session, url || session.queue[0]);
     res.json(result);
   } catch (err) {
     const error = err as Error;
     res.status(500).send("Error during crawling: " + error.message);
   }
+}
+
+export async function getUrlData(req: Request, res: Response) {
+  const { urls } = req.body;
+
+  if (!urls?.length) {
+    res.status(400).json({ error: "Missing URL" });
+    return;
+  }
+  res.set({
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+    Connection: "keep-alive",
+  });
+
+  await getUrlsData(req, res, urls);
 }

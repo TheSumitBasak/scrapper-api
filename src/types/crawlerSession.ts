@@ -7,6 +7,7 @@ export interface CrawlerSession {
 
 export interface CrawlerSessionState {
   queue: string[];
+  crawling?: Set<string>;
   visited: Set<string>;
   allLinks: Set<string>;
   token: string;
